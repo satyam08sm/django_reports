@@ -24,3 +24,5 @@ six==1.15.0
 sqlparse @ file:///tmp/build/80754af9/sqlparse_1602184451250/work
 webencodings==0.5.1
 xhtml2pdf==0.2.5
+
+django==3.2
