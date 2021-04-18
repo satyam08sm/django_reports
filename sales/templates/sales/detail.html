@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}
+Sales Details
+{% endblock title %}
+{% block content %}
+{{ obj.pk }}
+    <br/>
+    {{ obj.salesman }}
+    <br/>
+    {{ obj.total_price }}
+{% endblock content %}
