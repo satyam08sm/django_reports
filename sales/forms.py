@@ -6,8 +6,14 @@ CHART_CHOICES = (
     ('#3', 'Line Chart')
 )
 
+RESULT_CHOICES = (
+    ('transaction_id', 'Transaction ID'),
+    ('created', 'Created Date'),
+)
+
 
 class SalesSearchForm(forms.Form):
     date_from = forms.DateField()  # (widget=forms.DateInput(attrs={'type': 'date'}))
     date_to = forms.DateField()  # (widget=forms.DateInput(attrs={'type': 'date'}))
     chart_type = forms.ChoiceField(choices=CHART_CHOICES)
+    results_by = forms.ChoiceField(choices=RESULT_CHOICES)

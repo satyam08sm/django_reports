@@ -3,8 +3,9 @@ from django.views.generic import ListView, DetailView
 from .models import Sale
 from django.shortcuts import get_object_or_404
 from .forms import SalesSearchForm
+from reports.forms import ReportForm
 import pandas as pd
-from .utils import get_customer_from_id, get_salesman_from_id
+from .utils import get_customer_from_id, get_salesman_from_id, get_chart
 
 
 def home_view(request):
@@ -12,11 +13,16 @@ def home_view(request):
     positions_df = None
     merged_df = None
     df = None
-    form = SalesSearchForm(request.POST or None)
+    chart = None
+    search_form = SalesSearchForm(request.POST or None)
+    report_form = ReportForm()
+    no_data = None
+
     if request.method == 'POST':
         date_from = request.POST.get('date_from')
         date_to = request.POST.get('date_to')
         chart_type = request.POST.get('chart_type')
+        results_by = request.POST.get('results_by')
 
         sale_qs = Sale.objects.filter(created__date__gte=date_from, created__date__lte=date_to)
         if len(sale_qs) > 0:
@@ -42,19 +48,25 @@ def home_view(request):
                     positions_data.append(obj)
             positions_df = pd.DataFrame(positions_data)
             merged_df = pd.merge(sales_df, positions_df, on='sales_id')
-            df = merged_df.groupby('transaction_id', as_index=False)['price'].agg('sum')
+            df = merged_df.groupby(results_by, as_index=False)['price'].agg('sum')
+
+            chart = get_chart(chart_type, sales_df, results_by=results_by)
+
             sales_df = sales_df.to_html()
             positions_df = positions_df.to_html()
             merged_df = merged_df.to_html()
             df = df.to_html()
         else:
-            print("No data")
+            no_data = "No Data Available for selected values."
     context = {
-        'form': form,
+        'search_form': search_form,
         'sales_df': sales_df,
         'position_df': positions_df,
         'merged_df': merged_df,
         'df': df,
+        'chart': chart,
+        'report_form': report_form,
+        'no_data': no_data,
     }
     return render(request, 'sales/home.html', context)
 
