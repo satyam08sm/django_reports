@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF {{ pdf_object.name }}</title>
+    <style>
+        .image {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<h1>{{ pdf_object.name }}</h1>
+    {% if pdf_object.image %}
+        <img src="{{ pdf_object.image.path }}" alt="{{ pdf_object.name }}">
+    {% endif %}
+    <br/>
+    <h3>Remarks</h3>
+    <p>{{ pdf_object.remarks }}</p>
+    <hr/>
+    <p>Author: <b>{{ pdf_object.author.user.username }}</b></p>
+    <p>Created: <b>{{ pdf_object.created }}</b></p>
+</body>
+</html>

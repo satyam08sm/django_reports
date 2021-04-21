@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ qs.name }} Details
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ qs.name }}</h1>
+    {% if qs.image %}
+        <img src="{{ qs.image.url }}" alt="{{ qs.name }}" class="img-fluid">
+    {% endif %}
+    <br/>
+    <h3>Remarks</h3>
+    <p>{{ qs.remarks }}</p>
+    <hr/>
+    <p>Author: <b>{{ qs.author.user.username }}</b></p>
+    <p>Created: <b>{{ qs.created }}</b></p>
+{% endblock content %}
