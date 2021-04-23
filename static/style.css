@@ -17,3 +17,9 @@
 h4 {
     color: red;
 }
+
+.avatar-big {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+}
