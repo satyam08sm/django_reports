@@ -1,3 +1,19 @@
 .not-visible {
     display: none;
 }
+
+.dropzone {
+    border-style: dashed;
+    border-radius: 5px;
+    border-color: #ddd;
+    transition: .5s;
+}
+
+.dropzone:hover {
+    background-color: #f5f5f5;
+}
+
+
+h4 {
+    color: red;
+}

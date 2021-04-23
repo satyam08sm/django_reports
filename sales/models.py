@@ -11,7 +11,7 @@ class Position(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.FloatField(blank=True)
-    created = models.DateTimeField(blank=True)
+    created = models.DateField(blank=True)
 
     def __str__(self):
         return f"id: {self.id}, product: {self.product.name}, quanity: {self.quantity}"
@@ -31,8 +31,8 @@ class Sale(models.Model):
     total_price = models.FloatField(blank=True, null=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     salesman = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    created = models.DateTimeField(blank=True)
-    updated = models.DateTimeField(auto_now=True)
+    created = models.DateField(blank=True)
+    updated = models.DateField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if self.transaction_id == "":
@@ -48,14 +48,14 @@ class Sale(models.Model):
         return reverse('sales:detail', kwargs={'pk': self.pk})
 
     def __str__(self):
-        return f"Sales for the amount of {self.total_price}"
+        return f"Sales for the amount of {self.total_price} on {self.created}"
 
 
 class CSV(models.Model):
-    file_name = models.FileField(upload_to='csv_files')
-    activated = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    file_name = models.CharField(max_length=200, null=True)
+    csv_file = models.FileField(upload_to='csv_files', null=True)
+    created = models.DateField(auto_now_add=True)
+    updated = models.DateField(auto_now=True)
 
     def __str__(self):
         return str(self.file_name)
