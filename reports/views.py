@@ -8,6 +8,8 @@ from .utils import get_report_image
 from .models import Report
 from django.views.generic import ListView, TemplateView
 from django.utils.dateparse import parse_date
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from sales.models import Sale, Position, CSV
 from products.models import Product
@@ -16,11 +18,12 @@ from customers.models import Customer
 import csv
 
 
-class ReportListView(ListView):
+class ReportListView(LoginRequiredMixin, ListView):
     model = Report
     template_name = 'report/main.html'
 
 
+@login_required
 def report_detail_view(request, pk):
     qs = Report.objects.get(id=pk)
     context = {
@@ -29,6 +32,7 @@ def report_detail_view(request, pk):
     return render(request, 'report/detail.html', context=context)
 
 
+@login_required
 def report_form_view(request):
     if request.is_ajax():
         name = request.POST.get('name')
@@ -44,6 +48,7 @@ def report_form_view(request):
     return JsonResponse({'msg': 'Error Occurred'})
 
 
+@login_required
 def render_pdf_view(request, pk):
     template_path = 'report/pdf.html'
     context = {'pdf_object': get_object_or_404(Report, pk=pk)}
@@ -63,10 +68,11 @@ def render_pdf_view(request, pk):
     return response
 
 
-class UploadTemplateView(TemplateView):
+class UploadTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'report/from_file.html'
 
 
+@login_required
 def csv_upload_view(request):
     if request.method == 'POST':
         csv_file_name = request.FILES.get('file').name

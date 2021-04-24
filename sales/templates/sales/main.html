@@ -5,6 +5,25 @@
 sales List
 {% block content %}
     {% for obj in object_list %}
-        <a href="{{ obj.get_absolute_url }}">{{ obj.transaction_id }}</a>
+        {#        <a href="{{ obj.get_absolute_url }}">{{ obj.transaction_id }}</a>#}
+{#        <ol class="list-group list-group-numbered w-50">#}
+{#            <li class="list-group-item d-flex justify-content-between align-items-start mb-3">#}
+                {#                <a href="{{ obj.get_absolute_url }}">#}
+{#                <div class="ms-2 me-auto">#}
+{#                    <div class="fw-bold">{{ obj.transaction_id }}</div>#}
+{#                </div>#}
+{#                <span class="badge bg-primary rounded-pill">{{ obj.total_price }}</span>#}
+                {#                </a>#}
+{#            </li>#}
+{#        </ol>#}
+
+        <div class="list-group">
+            <a href="{{ obj.get_absolute_url }}" class="list-group-item list-group-item-action mb-3 w-50" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ forloop.counter }}. {{ obj.transaction_id }}</h5>
+                    <span class="badge bg-primary rounded-pill pt-2">{{ obj.total_price }}</span>
+                </div>
+            </a>
+        </div>
     {% endfor %}
 {% endblock content %}

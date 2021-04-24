@@ -7,8 +7,13 @@ from reports.forms import ReportForm
 import pandas as pd
 from .utils import get_customer_from_id, get_salesman_from_id, get_chart
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+
+@login_required
 def home_view(request):
+    print(dir(request))
     sales_df = None
     positions_df = None
     merged_df = None
@@ -71,7 +76,7 @@ def home_view(request):
     return render(request, 'sales/home.html', context)
 
 
-class SalesListView(ListView):
+class SalesListView(LoginRequiredMixin, ListView):
     model = Sale
     template_name = 'sales/main.html'
 
@@ -80,6 +85,7 @@ class SalesListView(ListView):
 #     model = Sale
 #     template_name = 'sales/detail.html'
 
+@login_required
 def sales_detail_view(request, **kwargs):
     pk = kwargs.get('pk')
     obj = get_object_or_404(Sale, pk=pk)
